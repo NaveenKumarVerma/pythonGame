@@ -22,8 +22,8 @@ pygame.display.update() #To update the frame
 
 
 clock = pygame.time.Clock()
-block_size=10
-FPS = 30
+block_size = 10
+FPS = 5
 
 font = pygame.font.SysFont(None, 25)
 
@@ -55,16 +55,16 @@ def gameLoop():
     randAppleY = round(random.randrange(0,display_height-block_size))#/10.0)*10.0
 
     while not gameExit:
-        while gameOver:
+        while gameOver == True:
             message_to_screen("Game Over,Press q to Quit and c to play again",red)
             pygame.display.update()
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    gameExit = False
-                    gameOver = True
+                    gameExit = True
+                    gameOver = False
 
                 if event.type == pygame.KEYDOWN:
-
                     if event.key == K_q:
                         gameExit = True
                         gameOver = False
@@ -79,23 +79,25 @@ def gameLoop():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == K_LEFT:
-                    lead_x_change=-10
+                    lead_x_change = -block_size
                     lead_y_change = 0
                 elif event.key == pygame.K_RIGHT:
-                    lead_x_change=10
+                    lead_x_change = block_size
                     lead_y_change = 0
                 elif event.key == K_UP:
                     lead_x_change = 0
-                    lead_y_change=-10
+                    lead_y_change = -block_size
                 elif event.key == K_DOWN:
                     lead_x_change = 0
-                    lead_y_change=10
+                    lead_y_change = block_size
                     
-            if event.type == pygame.KEYUP:
-                if event.key == K_LEFT or event.key ==  K_RIGHT:
-                    lead_x_change=0
-                elif event.key == K_UP or event.key == K_DOWN:
-                    lead_y_change=0
+#in order to make the snake stationary if any of the button is
+#not pressed remove the below code from comments
+##            if event.type == pygame.KEYUP:
+##                if event.key == K_LEFT or event.key ==  K_RIGHT:
+##                    lead_x_change=0
+##                elif event.key == K_UP or event.key == K_DOWN:
+##                    lead_y_change=0
 
         if lead_x>=display_width or lead_x<0 or lead_y>=display_height or lead_y<0: #boundary
                 gameOver = True
@@ -105,7 +107,7 @@ def gameLoop():
         
         gameDisplay.fill(white)
 
-        AppleThickness = 30
+        AppleThickness = 20
         pygame.draw.rect(gameDisplay, red,[randAppleX,randAppleY,AppleThickness,AppleThickness])
 
         
@@ -131,13 +133,23 @@ def gameLoop():
 ##            snakeLength+=1
 
 
-        if lead_x >= randAppleX and lead_x<=randAppleX+AppleThickness:
-            if lead_y >= randAppleY and lead_y<=randAppleY+AppleThickness:
+        
+        
+
+##
+##        if lead_x >= randAppleX and lead_x<=randAppleX+AppleThickness:
+##            if lead_y >= randAppleY and lead_y<=randAppleY+AppleThickness:
+##                randAppleX = round(random.randrange(0,display_width-block_size))#/10.0)*10.0
+##                randAppleY = round(random.randrange(1,display_height-block_size))#/10.0)*10.0
+##                snakeLength+=1
+
+        if lead_x > randAppleX and lead_x < randAppleX + AppleThickness or lead_x + block_size > randAppleX and lead_x + block_size < randAppleX + AppleThickness:
+            if lead_y > randAppleY and lead_y < randAppleY + AppleThickness or lead_y + block_size > randAppleY and lead_y + block_size < randAppleY + AppleThickness:
                 randAppleX = round(random.randrange(0,display_width-block_size))#/10.0)*10.0
                 randAppleY = round(random.randrange(1,display_height-block_size))#/10.0)*10.0
                 snakeLength+=1
-
-                    
+              
+                          
         clock.tick(FPS)
 
 
