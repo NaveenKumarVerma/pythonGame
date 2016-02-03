@@ -23,10 +23,9 @@ pygame.display.update() #To update the frame
 
 clock = pygame.time.Clock()
 block_size = 10
-FPS = 5
+FPS = 30
 
 font = pygame.font.SysFont(None, 25)
-
 
 def snake(block_size, snakelist):
     for XnY in snakelist:
@@ -43,6 +42,7 @@ def message_to_screen(msg,color):
 ##    gameDisplay.blit(screen_text,[display_width/2,display_height/2])
     textRect.center = (display_width/ 2),(display_height / 2)
     gameDisplay.blit(textSurf,textRect)
+
 
 
 def gameLoop():
@@ -157,7 +157,8 @@ def gameLoop():
                 randAppleY = round(random.randrange(1,display_height-block_size))#/10.0)*10.0
                 snakeLength+=1
               
-                          
+        if(snakeLength%5 == 0):
+            FPS+=5           
         clock.tick(FPS)
 
 
