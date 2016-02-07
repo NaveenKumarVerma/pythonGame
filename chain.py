@@ -43,6 +43,8 @@ def gameLoop():
     trackY={0:0,100:0,200:0,300:0,400:0,500:0}
     drawGrid(display_width,display_height)    
     pygame.display.update()
+    playerOne = True
+    playertwo = False
     
     #pygame.draw.rect(gameDisplay,green,((round((cur[0]/100.0)*100),round((cur[1]/100.0)*100)),100,100))
     while True:
@@ -54,22 +56,42 @@ def gameLoop():
         click = pygame.mouse.get_pressed()
         u = int(math.floor(cur[0]/100.0))*100
         v = int(math.floor(cur[1]/100.0))*100
-        
-        if click[0] == 1 and trackX[u]==0 and trackY[v]==0:
-            trackX[u]=1
-            trackY[v]=1
-            pygame.draw.ellipse(gameDisplay,light_red,(u,v,100,100))
-            pygame.display.update()
-        if trackX[u] == 1 and trackY[v] == 1 and click[0] == 1:
-            if (u == 0 and v == 0) or (u == 0 and v == 500) or(u == 700 and v == 0) or(u == 700 and v == 500):
-                trackX[u]=2
-                trackY[v]=2
-            else :
+        if playerOne == True:
+            if click[0] == 1 and trackX[u]==0 and trackY[v]==0:
+                
                 trackX[u]=1
                 trackY[v]=1
-            pygame.draw.ellipse(gameDisplay,black,(u+25,v+25,75,75))
-            pygame.display.update()
-            
+                pygame.draw.ellipse(gameDisplay,light_red,(u,v,100,100))
+                pygame.display.update()
+            if trackX[u] == 1 and trackY[v] == 1 and click[0] == 1:
+                if (u == 0 and v == 0) or (u == 0 and v == 500) or(u == 700 and v == 0) or(u == 700 and v == 500):
+                    trackX[u]=2
+                    trackY[v]=2
+                else :
+                    trackX[u]=1
+                    trackY[v]=1
+                pygame.draw.ellipse(gameDisplay,black,(u+25,v+25,75,75))
+                pygame.display.update()
+            playerOne = False
+            playerTwo = True
+        if playerTwo == True:
+            if click[0] == 1 and trackX[u]==0 and trackY[v]==0:
+                
+                trackX[u]=1
+                trackY[v]=1
+                pygame.draw.ellipse(gameDisplay,blue,(u,v,100,100))
+                pygame.display.update()
+            if trackX[u] == 1 and trackY[v] == 1 and click[0] == 1:
+                if (u == 0 and v == 0) or (u == 0 and v == 500) or(u == 700 and v == 0) or(u == 700 and v == 500):
+                    trackX[u]=2
+                    trackY[v]=2
+                else :
+                    trackX[u]=1
+                    trackY[v]=1
+                pygame.draw.ellipse(gameDisplay,black,(u+25,v+25,75,75))
+                pygame.display.update()
+                
+
             
 #    button()
         
