@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pygame
 import time
 import random
@@ -38,7 +40,39 @@ smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 80)
 
+def pause():
+    paused = True
+    message_to_screen("Pause",
+                      black,
+                      -100,
+                      size="large")
+    
+    message_to_screen("Press C to continue or Q to Quit",
+                      black,
+                      25)
+    pygame.display.update()
 
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_c:
+                    paused = False
+
+                elif event.key == K_q:
+                    pygame.quit()
+                    quit()
+
+        #gameDisplay.fill(white)
+
+        clock.tick(5)
+        
+def score(score):
+    text = smallfont.render("Score: "+str(score), True, black)
+    gameDisplay.blit(text, [0,0])
 
 def snake(block_size, snakelist):
     if direction == "right":
@@ -105,7 +139,7 @@ def game_intro():
                           red,
                           50,"small")
         
-        message_to_screen("Press C to PLAY or Q to QUIT",
+        message_to_screen("Press C to PLAY ,P to Pause and Q to QUIT",
                           black,
                           180,
                           "small")
@@ -132,16 +166,18 @@ def gameLoop():
     randAppleY = round(random.randrange(0,display_height-block_size))#/10.0)*10.0
 
     while not gameExit:
-        while gameOver == True:
+        if gameOver == True:
+            #gameDisplay.fill(white)
             message_to_screen("Game Over",
                               red,
                               y_displace=-50,
                               size="large")
-            message_to_screen("Press C to Play and Q to Quit",
+            message_to_screen("Press C to Play and Q to Quit ",
                               black,
                               50,
                               size="medium")
             pygame.display.update()
+        while gameOver == True:
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -162,19 +198,19 @@ def gameLoop():
                 gameExit = True
 
             if event.type == pygame.KEYDOWN:
-                if event.key == K_LEFT:
+                if event.key == K_LEFT or event.key == K_a:
                     direction= "left"
                     lead_x_change = -block_size
                     lead_y_change = 0
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT or event.key == K_d:
                     direction= "right"
                     lead_x_change = block_size
                     lead_y_change = 0
-                elif event.key == K_UP:
+                elif event.key == K_UP or event.key == K_w:
                     direction= "up"
                     lead_x_change = 0
                     lead_y_change = -block_size
-                elif event.key == K_DOWN:
+                elif event.key == K_DOWN or event.key == K_s:
                     direction= "down"
                     lead_x_change = 0
                     lead_y_change = block_size
@@ -187,6 +223,8 @@ def gameLoop():
 ##                elif event.key == K_UP or event.key == K_DOWN:
 ##                    lead_y_change=0
 
+                elif event.key == K_p:
+                    pause()
         if lead_x>=display_width or lead_x<0 or lead_y>=display_height or lead_y<0: #boundary
                 gameOver = True
                 
@@ -212,7 +250,8 @@ def gameLoop():
                 gameOver = True
                 
         snake(block_size, snakeList)
-        
+
+        score(snakeLength-1)
         pygame.display.update() #To update the frame
 
 ##        if lead_x == randAppleX and lead_y ==randAppleY:
