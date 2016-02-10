@@ -1,0 +1,15 @@
+from cx_Freeze import setup, Executable
+
+# Dependencies are automatically detected, but it might need
+# fine tuning.
+buildOptions = dict(packages = [], excludes = [])
+
+executables = [
+    Executable('snake.py', 'Console', targetName = 'snake.py')
+]
+
+setup(name='Slither',
+      version = '1.0',
+      description = 'Snake Game',
+      options = dict(build_exe = buildOptions),
+      executables = executables)
